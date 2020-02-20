@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1579749621 source:c:\users\mitch\documents\school\third year\2nd sem\3sk3\project1efficient\main.c
+1582229718 source:c:\users\mitch\documents\school\third year\2nd sem\3sk3\project1efficient\main.c
 	<stdio.h>
 	<stdlib.h>
 	"stb_image.h"
 	"stb_image_write.h"
+	<time.h>
 
 1579293778 c:\users\mitch\documents\school\third year\2nd sem\3sk3\project1efficient\stb_image.h
 	"stb_image.h"

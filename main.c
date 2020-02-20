@@ -4,7 +4,7 @@
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
-
+#include <time.h>
 int pixelCalculator(uint8_t fourPixels[4]){
     // We are ALWAYS calculating f(1/2) -> makes computation easy
     //Expansion from the ppt slide 9 gives very simple formula
@@ -29,12 +29,16 @@ int main()
 {
     int width, height, bpp;
     int NUM_CHANNELS = 1;
-    uint8_t* image = stbi_load("owl.jpg", &width, &height, &bpp, NUM_CHANNELS);
+    uint8_t* image = stbi_load("img_test_lr.png", &width, &height, &bpp, NUM_CHANNELS);
     uint8_t* resizedImage = (uint8_t*) calloc(4*width*height, sizeof(uint8_t));
 
+    //https://www.wikiwand.com/en/Comparison_gallery_of_image_scaling_algorithms
+
+    //Record start time
+    clock_t t;
+    t = clock();
 
     //First go horizontally across the image interpolating cubically for a single point then shifting
-
     uint8_t fourPixels[4];
     int resizedImagePosition = 3; //insert first new calculated pixel in position 3
     //Every point we are calcualting is f(1/2)
@@ -109,10 +113,15 @@ int main()
         resizedImage[newWidth*(newHeight-1) + i] = resizedImage[newWidth*(newHeight-2) + i];
     }
 
+    t = clock() - t;
+    double total_time = ((double)t)/CLOCKS_PER_SEC; // in seconds
+
+    printf("Execution time of: %f \n", total_time);
 
 
+    stbi_write_jpg("img_test_lr_interp.jpg", 2*width, 2*height, NUM_CHANNELS, resizedImage, width*NUM_CHANNELS);
 
-    stbi_write_jpg("finalImage.jpg", 2*width, 2*height, NUM_CHANNELS, resizedImage, width*NUM_CHANNELS);
+    system("img_test_lr_interp.jpg");
 
     stbi_image_free(image);
     free(resizedImage);
